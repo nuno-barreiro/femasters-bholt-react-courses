@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Pet from "./Pet";
 
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
-const BREEDS = [];
 
 const SearchParams = () => {
   // rule for hooks: have to be created every single time in the same order
@@ -11,9 +11,32 @@ const SearchParams = () => {
   const [animal, setAnimal] = useState("");
   const [breed, setBreed] = useState("");
 
+  const [pets, setPets] = useState([]);
+  const breeds = [];
+
+  // effects run everytime the component renders
+  // multiple dependencies can be passed to trigger everytime those change
+  // passing an empty list of dependencies prevent this behaviour and renders only on init
+  useEffect(() => {
+    requestPets();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  async function requestPets() {
+    const res = await fetch(
+      `http://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
+    );
+    const json = await res.json();
+    setPets(json.pets);
+  }
+
   return (
     <div className="search-params">
-      <form>
+      <form
+        onSubmit={(evt) => {
+          evt.preventDefault();
+          requestPets();
+        }}
+      >
         <label htmlFor="location">
           Location
           <input
@@ -45,16 +68,25 @@ const SearchParams = () => {
           <select
             id="breed"
             value={breed}
-            disabled={BREEDS.length === 0}
+            disabled={breeds.length === 0}
             onChange={(evt) => setBreed(evt.target.value)}
           >
             <option />
-            {BREEDS.map((breed) => (
+            {breeds.map((breed) => (
               <option key={breed}>{breed}</option>
             ))}
           </select>
         </label>
         <button>Submit</button>
+
+        {pets.map((pet) => (
+          <Pet
+            key={pet.id}
+            name={pet.name}
+            animal={pet.animal}
+            breed={pet.breed}
+          />
+        ))}
       </form>
     </div>
   );
