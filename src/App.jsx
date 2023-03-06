@@ -3,6 +3,10 @@ import SearchParams from "./SearchParams";
 
 const App = () => {
   return (
+    // while enabling strict mode seems a good thing to do because it gives additional warnings during development
+    // in React v18 it runs twice the application initialization function, to ensure it is truly stateless
+    // thus it is disabled to prevent double requests to the APIs for this project
+    // <StrictMode></StrictMode>
     <div id="app">
       <h1>Adopt Me!</h1>
       <SearchParams></SearchParams>
