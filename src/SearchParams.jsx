@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useBreedList from "./useBreedList";
 import Pet from "./Pet";
 
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
@@ -7,12 +8,10 @@ const SearchParams = () => {
   // rule for hooks: have to be created every single time in the same order
   // for example, conditional creation of hooks is not possible
   const [location, setLocation] = useState("");
-
   const [animal, setAnimal] = useState("");
   const [breed, setBreed] = useState("");
-
   const [pets, setPets] = useState([]);
-  const breeds = [];
+  const [breeds] = useBreedList(animal);
 
   // effects run everytime the component renders
   // multiple dependencies can be passed to trigger everytime those change
@@ -73,7 +72,9 @@ const SearchParams = () => {
           >
             <option />
             {breeds.map((breed) => (
-              <option key={breed}>{breed}</option>
+              <option key={breed} value={breed}>
+                {breed}
+              </option>
             ))}
           </select>
         </label>
