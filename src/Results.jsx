@@ -13,6 +13,7 @@ const Results = ({ pets }) => {
           // thus it is only recommended to be used for truly "pass-through" components
           // <Pet { ...pet } />
           <Pet
+            id={pet.id}
             animal={pet.animal}
             name={pet.name}
             breed={pet.breed}

@@ -1,4 +1,6 @@
 import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Details from "./Details";
 import SearchParams from "./SearchParams";
 
 const App = () => {
@@ -7,10 +9,13 @@ const App = () => {
     // in React v18 it runs twice the application initialization function, to ensure it is truly stateless
     // thus it is disabled to prevent double requests to the APIs for this project
     // <StrictMode></StrictMode>
-    <div id="app">
+    <BrowserRouter>
       <h1>Adopt Me!</h1>
-      <SearchParams></SearchParams>
-    </div>
+      <Routes>
+        <Route path="/details/:id" element={<Details />} />
+        <Route path="/" element={<SearchParams />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
