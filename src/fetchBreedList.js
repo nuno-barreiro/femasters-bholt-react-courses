@@ -1,5 +1,10 @@
 const fetchBreedList = async ({ queryKey }) => {
     const animal = queryKey[1];
+
+    if (!animal) {
+        return [];
+    }
+
     const url = `http://pets-v2.dev-apis.com/breeds?animal=${animal}`
 
     const apiRes = await fetch(url);
